@@ -16,7 +16,7 @@ END)
 WHEN attribute(get_feature('cca_enchapetipo', 'iliCode', 'Sin_Cubrimiento'), 'T_Id') = enchape_banio THEN 0
 WHEN attribute(get_feature('cca_enchapetipo', 'iliCode', 'Paniete_Baldosa_Comun_De_Cemento'), 'T_Id') = enchape_banio THEN 1
 WHEN attribute(get_feature('cca_enchapetipo', 'iliCode', 'Baldosin_Unicolor_Papel_Comun'), 'T_Id') = enchape_banio THEN 2
-WHEN attribute(get_feature('cca_enchapetipo', 'iliCode', 'ConcretoBaldosin_Decorado_Papel_Fino_Prefabricado'), 'T_Id') = enchape_banio THEN 3
+WHEN attribute(get_feature('cca_enchapetipo', 'iliCode', 'Baldosin_Decorado_Papel_Fino'), 'T_Id') = enchape_banio THEN 3
 WHEN attribute(get_feature('cca_enchapetipo', 'iliCode', 'Ceramica_Cristanac_Granito'), 'T_Id') = enchape_banio THEN 4
 WHEN attribute(get_feature('cca_enchapetipo', 'iliCode', 'Marmol_enchape_lujoso'), 'T_Id') = enchape_banio THEN 5
 ELSE 0
