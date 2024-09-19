@@ -1,7 +1,3 @@
-INSERT INTO cca_predio
-(  id_operacion, departamento_municipio, clase_suelo_registro, categoria_suelo, validacion_datos_localizacion, nupre, numero_predial, numero_predial_anterior, validacion_datos_catastrales, tiene_fmi, codigo_orip, matricula_inmobiliaria, estado_folio, tiene_area_registral, area_registral_m2, validacion_datos_registrales, condicion_predio, total_unidades_privadas, numero_torres, area_total_terreno, area_total_terreno_privada, area_total_terreno_comun, area_total_construida, area_total_construida_privada, area_total_construida_comun, predio_matriz, coeficiente_copropiedad, validacion_condicion_predio, destinacion_economica, validacion_destinacion_economica, predio_tipo, validacion_tipo_predio, validacion_derechos, resultado_visita, otro_cual_resultado_visita, suscribe_acta_colindancia, valor_referencia, fecha_visita_predial, tipo_documento_quien_atendio, numero_documento_quien_atendio, nombres_apellidos_quien_atendio, celular, correo_electronico, observaciones, despojo_abandono, estrato, otro_cual_estrato, usuario)
-VALUES(0, '', '', '', 0, 0, 0, '', '', '', 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 0, 0, 0, 0, 0, 0, 0, '', 0, 0, '', 0, '', '', '', '', '', 0, 0, '', 0);
-
 /*Identificacion de los datos de los interesados*/
 
 select i.espacio_de_nombres, i.local_id, i.nombre, i.documento_identidad,
