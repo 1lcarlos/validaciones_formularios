@@ -14,6 +14,13 @@ left join gc_interesadodocumentotipo itd on itd.id = i.tipo_documento
 where i.local_id in (/*Numero prediales*/
 )
 
+/*Indentificacion de agrupacion de interesados*/
+
+select ai.espacio_de_nombres, ai.local_id, ai.nombre, gi.text_code as agrupacion_tipo from gc_agrupacioninteresados ai
+join col_grupointeresadotipo gi on gi.id = ai.tipo 
+where ai.nombre in (/*Numero prediales*/)
+
+
 /*Identificacion de los predios*/
 select p.local_id , p.departamento, p.municipio, p.tiene_fmi, p.codigo_orip, p.matricula_inmobiliaria, 
 p.numero_predial, p. numero_predial_anterior, p.nupre, p.interrelacionado, p.nupre_fmi, p.area, p.area_construida,
@@ -112,3 +119,54 @@ SELECT
         ELSE NULL
     END AS destinacion_economica
 FROM gc_predio p;
+
+/*Insercion datos interesado*/
+INSERT INTO cca_interesado
+(direccion_residencia, tipo, tipo_documento, documento_identidad, primer_nombre, segundo_nombre, 
+primer_apellido, segundo_apellido, sexo, grupo_etnico, razon_social, estado_civil)
+SELECT 
+i.local_id,
+CASE
+	WHEN i.personatipo = 'Persona_Natural' THEN (SELECT T_Id FROM cca_interesadotipo it WHERE it.iliCode = 'Persona_Natural')
+	WHEN i.personatipo = 'Persona_Juridica' THEN (SELECT T_Id FROM cca_interesadotipo it WHERE it.iliCode = 'Persona_Juridica')
+	ELSE  NULL 
+END AS persona_tipo,
+CASE
+	WHEN i.documentotipo = 'Cedula_Ciudadania' THEN  (SELECT T_Id FROM cca_interesadodocumentotipo idt WHERE idt.iliCode = 'Cedula_Ciudadania')
+	WHEN i.documentotipo = 'Cedula_Extranjeria' THEN (SELECT T_Id FROM cca_interesadodocumentotipo idt WHERE idt.iliCode = 'Cedula_Extranjeria')
+	WHEN i.documentotipo = 'NIT' THEN (SELECT T_Id FROM cca_interesadodocumentotipo idt WHERE idt.iliCode = 'NIT')
+	WHEN i.documentotipo = 'Tarjeta_Identidad' THEN (SELECT T_Id FROM cca_interesadodocumentotipo idt WHERE idt.iliCode = 'Tarjeta_Identidad')
+	WHEN i.documentotipo = 'Registro_Civil' THEN (SELECT T_Id FROM cca_interesadodocumentotipo idt WHERE idt.iliCode = 'Registro_Civil')
+	WHEN i.documentotipo = 'Secuencial' THEN (SELECT T_Id FROM cca_interesadodocumentotipo idt WHERE idt.iliCode = 'Secuencial')
+	WHEN i.documentotipo = 'Pasaporte' THEN (SELECT T_Id FROM cca_interesadodocumentotipo idt WHERE idt.iliCode = 'Pasaporte')
+	ELSE  NULL 
+END as documento_tipo,
+i.documento_identidad,
+i.primer_nombre,
+i.segundo_nombre,
+i.primer_apellido,
+i.segundo_apellido,
+CASE
+	WHEN i.sexo = 'Masculino' THEN (SELECT T_Id FROM cca_sexotipo st WHERE st.iliCode = 'Masculino')
+	WHEN i.sexo = 'Femenino' THEN (SELECT T_Id FROM cca_sexotipo st WHERE st.iliCode = 'Femenino')
+	WHEN i.sexo = 'Sin_Determinar' THEN (SELECT T_Id FROM cca_sexotipo st WHERE st.iliCode = 'Sin_Determinar')
+	ELSE NULL 
+END as sexo_tipo,
+CASE 
+	WHEN i.grupoetnico = 'Indigena' THEN (SELECT T_Id from cca_grupoetnicotipo gett WHERE gett.iliCode = 'Indigena')
+	WHEN i.grupoetnico = 'Rrom' THEN (SELECT T_Id from cca_grupoetnicotipo gett WHERE gett.iliCode = 'Rrom') 
+	WHEN i.grupoetnico = 'Raizal' THEN (SELECT T_Id from cca_grupoetnicotipo gett WHERE gett.iliCode = 'Raizal') 
+	WHEN i.grupoetnico = 'Palenquero' THEN (SELECT T_Id from cca_grupoetnicotipo gett WHERE gett.iliCode = 'Palenqueroígena') 
+	WHEN i.grupoetnico = 'Negro_Afrocolombiano' THEN (SELECT T_Id from cca_grupoetnicotipo gett WHERE gett.iliCode = 'Negro_Afrocolombiano')
+	WHEN i.grupoetnico = 'Ninguno' THEN (SELECT T_Id from cca_grupoetnicotipo gett WHERE gett.iliCode = 'Ninguno') 
+END as grupo_etnico,
+i.razon_social, 
+CASE 
+	WHEN i.estadocivil = 'No_Casado_Vive_En_Pareja_Menos_2_Anios' THEN (SELECT T_Id FROM cca_estadociviltipo ect WHERE ect.iliCode = 'No_Casado_Vive_En_Pareja_Menos_2_Anios')
+	WHEN i.estadocivil = 'No_Casado_Vive_En_Pareja_2_Anios_O_Mas' THEN (SELECT T_Id FROM cca_estadociviltipo ect WHERE ect.iliCode = 'No_Casado_Vive_En_Pareja_2_Anios_O_Mas')
+	WHEN i.estadocivil = 'Casado' THEN (SELECT T_Id FROM cca_estadociviltipo ect WHERE ect.iliCode = 'Casado')
+	WHEN i.estadocivil = 'Separado_Divorciado' THEN (SELECT T_Id FROM cca_estadociviltipo ect WHERE ect.iliCode = 'Separado_Divorciado')
+	WHEN i.estadocivil = 'Viudo' THEN (SELECT T_Id FROM cca_estadociviltipo ect WHERE ect.iliCode = 'Viudo')
+	WHEN i.estadocivil = 'Soltero' THEN (SELECT T_Id FROM cca_estadociviltipo ect WHERE ect.iliCode = 'Soltero')
+END as estado_civil
+FROM gc_interesado i
